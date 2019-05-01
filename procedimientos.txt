@@ -1,0 +1,65 @@
+-- CRUD  
+--procedimiento almacenado para guardar
+
+create procedure guardar_cliente
+@Nombre_Cliente varchar(25),
+@Apellido_Cliente varchar(25),
+@Direccion varchar(50),
+@Identificacion varchar(15),
+@Correo varchar(50),
+@Telefono varchar(15),
+@Foto varchar(200),
+@Sexo char(1)
+as
+insert into Cliente(Nombre_Cliente,Apellido_Cliente,Direccion,Identificacion,Correo,Telefono,Foto,Sexo)
+values (@Nombre_Cliente,@Apellido_Cliente,@Direccion,@Identificacion,@Correo,@Telefono,@Foto,@Sexo)
+go
+
+-- procedimiento de actualizar cliente
+create PROCEDURE actualizar_cliente
+@Codigo_Cliente int,
+@Nombre_Cliente Varchar(25),
+@Apellido_Cliente varchar(25),
+@Direccion varchar(50),
+@Identificacion varchar(15),
+@Correo varchar(50),
+@Telefono varchar(15),
+@Foto varchar(200),
+@Sexo char(1),
+@Estado char(1) 
+AS
+BEGIN
+UPDATE Cliente SET Nombre_Cliente = @Nombre_Cliente,Apellido_Cliente = @Apellido_Cliente,Direccion = @Direccion,
+Identificacion = @Identificacion,Correo = @Correo,Telefono = @Telefono,Foto = @foto,Sexo = @sexo,Estado = @Estado 
+WHERE codigo_cliente = @Codigo_cliente 
+END  
+GO
+
+CREATE PROCEDURE eliminar_cliente 
+@Codigo_Cliente int 
+AS BEGIN  UPDATE Cliente set Estado = '0' 
+WHERE codigo_cliente = @Codigo_Cliente 
+END
+GO
+
+CREATE PROCEDURE listar_cliente_activos
+AS 
+BEGIN 
+SELECT * FROM Cliente WHEre Estado = '1' 
+END 
+Go
+
+
+CREATE PROCEDURE listar_cliente_inactivos
+AS 
+BEGIN 
+SELECT * FROM Cliente WHEre Estado = '0' 
+END 
+Go
+
+create procedure buscar_cliente
+@Identificacion varchar(15)
+as
+select * from Cliente
+where Identificacion = @identificacion
+go

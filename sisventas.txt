@@ -1,0 +1,64 @@
+drop database sisventas
+go
+
+create database sisventas
+go
+
+use sisventas
+go
+
+
+CREATE TABLE Cliente
+( 
+	Codigo_Cliente       int primary key identity(1,1),
+	Nombre_Cliente       varchar(25)  not NULL ,
+	Apellido_Cliente     varchar(25)  not NULL ,
+	Direccion            varchar(50)  not NULL ,
+	Identificacion       varchar(15)  not NULL ,
+	Correo               varchar(50)  NULL ,
+	Telefono             varchar(15)  NULL ,
+	Foto                 varchar(200) NULL ,
+	Estado               char(1) default(1) not NULL,
+	Sexo                 char(1)  not NULL 
+)
+go
+
+
+
+CREATE TABLE Producto
+( 
+	Codigo_Producto      int primary key identity(1,1),
+	Descripcion          varchar(50)  NULL ,
+	Nombre_Producto      varchar(40) not NULL ,
+	Stock                integer  not NULL ,
+	Precio               numeric(18,5) not NULL ,
+	Fecha_Vencimiento    date  not NULL ,
+	Estado               char(1)  default (1) not NULL ,
+	Foto                 varchar(200)  NULL ,
+	Fecha_Ingreso        datetime  not NULL 
+)
+go
+
+
+CREATE TABLE Venta
+( 
+	Codigo_Cliente       int NOT NULL ,
+	Codigo_Producto      int NOT NULL ,
+	Codigo_Venta         int primary key identity (1,1),
+	Cantidad             int  not NULL ,
+	Subtotal             numeric(18,5) not NULL ,
+	Impuesto             numeric(18,5) not NULL ,
+	Total                numeric(18,5) not NULL ,
+	Fecha_Venta          date  not NULL ,
+	Estado               char(1) default(1) not NULL 
+)
+go
+
+
+ALTER TABLE Venta
+	ADD CONSTRAINT R_1 FOREIGN KEY (Codigo_Cliente) REFERENCES Cliente(Codigo_Cliente)
+go
+
+ALTER TABLE Venta
+	ADD CONSTRAINT R_3 FOREIGN KEY (Codigo_Producto) REFERENCES Producto(Codigo_Producto)
+go
