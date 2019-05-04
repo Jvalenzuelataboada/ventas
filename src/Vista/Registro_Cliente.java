@@ -16,10 +16,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Registro_Cliente extends javax.swing.JFrame {
     
-    
-
-   
-    
+     
     Ccliente cc=new Ccliente();
     Cliente cli=new Cliente();
     List<Cliente> ltc;
@@ -80,9 +77,7 @@ public class Registro_Cliente extends javax.swing.JFrame {
     public void llenarTabla(){
      String[] cols ={"ID","NOMBRE","APELLIDO","DIRECCION","IDENTIFICACION","CORREO","TELEFONO","FOTO","ESTADO","SEXO"};
      ltc = cc.ListaCliente();
-     
      Object[][] rows = new Object[ltc.size()][cols.length];
-       
      for (int i = 0; i < ltc.size(); i++) {
             rows[i][0] = ltc.get(i).getCodigo_cliente();
             rows[i][1] = ltc.get(i).getNombre_cliente();
@@ -96,7 +91,6 @@ public class Registro_Cliente extends javax.swing.JFrame {
             rows[i][9] = ltc.get(i).getSexo();
 
         }
-     
      DefaultTableModel tb=new DefaultTableModel(rows,cols);
      jTable1.setModel(tb);
     }
@@ -195,6 +189,11 @@ public class Registro_Cliente extends javax.swing.JFrame {
         jRadioButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jRadioButton2MouseClicked(evt);
+            }
+        });
+        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton2ActionPerformed(evt);
             }
         });
 
@@ -519,7 +518,7 @@ public class Registro_Cliente extends javax.swing.JFrame {
             sexo = "F";
         }
 
-            if(name.trim().length() > 2 && lastname.trim().length()>2 && direccion.trim().length() > 2 && identificacion.trim().length() > 2 && correo.trim().length() > 2 && telefono.trim().length() > 2 && url.trim().length() !=0  && sexo.trim().length() != 0){
+    if(name.trim().length() > 2 && lastname.trim().length()>2 && direccion.trim().length() > 2 && identificacion.trim().length() > 2 && correo.trim().length() > 2 && telefono.trim().length() > 2 && url.trim().length() !=0  && sexo.trim().length() != 0){
 
                 cli.setNombre_cliente(name);
                 cli.setApellido_cliente(lastname);
@@ -550,7 +549,7 @@ public class Registro_Cliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        // TODO add your handling code here:
+        jTextField1.setEnabled(true);
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -573,11 +572,12 @@ public class Registro_Cliente extends javax.swing.JFrame {
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
         // TODO add your handling code here:         
         if (jRadioButton1.isSelected()) {
-//            if (!Character.isDigit(evt.getKeyChar()) && evt.getKeyChar() != KeyEvent.VK_SPACE && evt.getKeyChar() != KeyEvent.VK_BACKSPACE) {
-//                getToolkit().beep();
-//                JOptionPane.showMessageDialog(null, "Ingreso solo de numeros", "MENSAJE", JOptionPane.WARNING_MESSAGE);
-//                evt.consume();
-//            }
+          
+            if (!Character.isDigit(evt.getKeyChar()) && evt.getKeyChar() != KeyEvent.VK_SPACE && evt.getKeyChar() != KeyEvent.VK_BACKSPACE) {
+                getToolkit().beep();
+                JOptionPane.showMessageDialog(null, "Ingreso solo de numeros", "MENSAJE", JOptionPane.WARNING_MESSAGE);
+                evt.consume();
+            }
             String user = jTextField1.getText();
          String[] cols = {"Id", "Nombre", "Apellido", "Direccion", "Identificacion", "Correo", "Telefono", "Foto", "Estado", "Sexo"};
           List<Cliente> ltac = null;
@@ -708,14 +708,14 @@ public class Registro_Cliente extends javax.swing.JFrame {
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
 
         
-      if (!Character.isLetter(evt.getKeyChar()) && evt.getKeyChar() != KeyEvent.VK_SPACE && evt.getKeyChar() != KeyEvent.VK_BACKSPACE) {
-        getToolkit().beep();
-        JOptionPane.showMessageDialog(null, "Ingreso solo de Letras", "MENSAJE", JOptionPane.WARNING_MESSAGE);
-        evt.consume();
-      }
-      if(String.valueOf(jTextField3.getText().charAt(0)).equals(" ")){
-          JOptionPane.showMessageDialog(null,"Su primer digito es un espacio en blanco");
-      }
+//      if (!Character.isLetter(evt.getKeyChar()) && evt.getKeyChar() != KeyEvent.VK_SPACE && evt.getKeyChar() != KeyEvent.VK_BACKSPACE) {
+//        getToolkit().beep();
+//        JOptionPane.showMessageDialog(null, "Ingreso solo de Letras", "MENSAJE", JOptionPane.WARNING_MESSAGE);
+//        evt.consume();
+//      }
+//      if(String.valueOf(jTextField3.getText().charAt(0)).equals(" ")){
+//          JOptionPane.showMessageDialog(null,"Su primer digito es un espacio en blanco");
+//      }
 //      if(String.valueOf(TEXTFIELD.getText().charAt(0)).equals(" ")){ JOptionPane.showMessageDialog(null,"Su primer digito es un espacio en blanco"); }
     }//GEN-LAST:event_jTextField3KeyTyped
 
@@ -765,6 +765,10 @@ public class Registro_Cliente extends javax.swing.JFrame {
 
             }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+        jTextField1.setEnabled(true);
+    }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     
     public static void main(String args[]) {

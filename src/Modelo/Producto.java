@@ -9,23 +9,20 @@ import java.sql.Date;
 public class Producto {
     
     private int codigo_producto,stock;
-    private String descripcion,nombre_producto,estado,foto;
-    private float precio;
-    private Date fecha_vencimiento,fecha_ingreso;
+   private String precio,descripcion,nombre_producto,estado,foto;
+//   private String  ,fecha_vencimiento,fecha_ingreso
 
     public Producto() {
     }
 
-    public Producto(int codigo_producto, int stock, String descripcion, String nombre_producto, String estado, String foto, float precio, Date fecha_vencimiento, Date fecha_ingreso) {
+    public Producto(int codigo_producto, int stock, String precio, String descripcion, String nombre_producto, String estado, String foto) {
         this.codigo_producto = codigo_producto;
         this.stock = stock;
+        this.precio = precio;
         this.descripcion = descripcion;
         this.nombre_producto = nombre_producto;
         this.estado = estado;
         this.foto = foto;
-        this.precio = precio;
-        this.fecha_vencimiento = fecha_vencimiento;
-        this.fecha_ingreso = fecha_ingreso;
     }
 
     public int getCodigo_producto() {
@@ -42,6 +39,14 @@ public class Producto {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public String getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(String precio) {
+        this.precio = precio;
     }
 
     public String getDescripcion() {
@@ -75,30 +80,7 @@ public class Producto {
     public void setFoto(String foto) {
         this.foto = foto;
     }
-
-    public float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
-    }
-
-    public Date getFecha_vencimiento() {
-        return fecha_vencimiento;
-    }
-
-    public void setFecha_vencimiento(Date fecha_vencimiento) {
-        this.fecha_vencimiento = fecha_vencimiento;
-    }
-
-    public Date getFecha_ingreso() {
-        return fecha_ingreso;
-    }
-
-    public void setFecha_ingreso(Date fecha_ingreso) {
-        this.fecha_ingreso = fecha_ingreso;
-    }
-    
+        
+  
     
 }

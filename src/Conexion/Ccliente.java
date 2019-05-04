@@ -9,19 +9,16 @@ import Modelo.Cliente;
 import java.util.List;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
-/**
- *
- * @author UserR
- */
+
 public class Ccliente {
-    
-    Conexion co;
-    PreparedStatement pre;
-     ResultSet rs;
+
+    public ResultSet rs; // CLASE QUE MANIPULA LOS DATOS
     
         public boolean AgregarPersona(Cliente cli) {
         Connection co = null;
@@ -74,9 +71,7 @@ public class Ccliente {
                 c.setTelefono(rs.getString(7));
                 c.setFoto(rs.getString(8));
                 c.setEstado(rs.getString(9));
-                c.setSexo(rs.getString(10));
-                
-                
+                c.setSexo(rs.getString(10));  
                 //resp = cstm.execute();
                 lista.add(c);
                 co.commit();
