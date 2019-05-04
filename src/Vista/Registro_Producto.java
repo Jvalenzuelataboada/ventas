@@ -11,6 +11,7 @@ import Modelo.Producto;
 import java.io.File;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -44,72 +45,9 @@ public class Registro_Producto extends javax.swing.JFrame {
      
         jComboBox1.addItem("0");
         jComboBox1.addItem("1");
-    }
-    
-                        
+    }                         
 
     
-//    String sql="SELECT*FROM Producto ORDER BY 2";
-//     
-//    private  static DefaultTableCellRenderer trc;
-//    
-//    public void LimpiarTabla(DefaultTableModel model){
-//  int x;
-//  for (x=model.getRowCount()-1; x>=0;x--){
-//   model.removeRow(x); 
-//  }  
-// }
-    
-    
-//   public void LlenarTabla(String sql){
-//   try{
-//    //consulta
-//    con.rs=con.stm.executeQuery(sql);
-//    //defino la variable
-//    DefaultTableModel model=(DefaultTableModel) jTable1.getModel();
-//    //limpio los datos
-//    LimpiarTabla(model);
-//    //llenar los datos
-//    while(con.rs.next()){
-//     String col1=con.rs.getString(1);
-//     String col2=con.rs.getString(2);
-//     String col3=con.rs.getString(3);
-//     String col4=con.rs.getString(4);
-//     String col5=con.rs.getString(5);
-//     String col6=con.rs.getString(6);
-//     String col7=con.rs.getString(7);
-//     String col8=con.rs.getString(8);
-//        
-    
-       
-     //vRow es ifual a una fila
-//     Vector vRow=new Vector ();
-//     vRow.addElement(col1);
-//     vRow.addElement(col2);
-//     vRow.addElement(col3);
-//     vRow.addElement(col4);
-//     vRow.addElement(col5); 
-//     vRow.addElement(col6);
-//     vRow.addElement(col7);
-//     vRow.addElement(col8);
-//
-//
-//     trc= new DefaultTableCellRenderer();
-//    trc.setHorizontalAlignment(SwingConstants.RIGHT);
-//     model.addRow(vRow);
-//    jTable1.getColumnModel().getColumn(2).setCellRenderer(trc);
-//    jTable1.getColumnModel().getColumn(3).setCellRenderer(trc);
-//   // jtbproducto.getColumnModel().getColumn(4).setCellRenderer(trc);
-//     
-//    }
-//   }
-//   catch (Exception e){
-//    System.out.println(e.getMessage());
-//     
-//   }
- 
-  
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -141,7 +79,7 @@ public class Registro_Producto extends javax.swing.JFrame {
         jDateChooser3 = new com.toedter.calendar.JDateChooser();
         jLabel12 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox<String>();
         jLabel13 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -199,8 +137,6 @@ public class Registro_Producto extends javax.swing.JFrame {
 
         jLabel5.setText("Fecha Vencimiento : ");
 
-        jDateChooser4.setDateFormatString("dd/MM/yyyy");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -223,8 +159,6 @@ public class Registro_Producto extends javax.swing.JFrame {
 
         jLabel7.setText("Fecha Ingreso : ");
 
-        jDateChooser3.setDateFormatString("dd/MM/yyyy");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -246,8 +180,6 @@ public class Registro_Producto extends javax.swing.JFrame {
         );
 
         jLabel12.setText("Codigo : ");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel13.setText("Estado :");
 
@@ -534,35 +466,45 @@ public class Registro_Producto extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-       
-        String name =jTextField1.getText();
-        int stock=Integer.parseInt(jTextField2.getText());
-        String precio=jTextField3.getText();
-        String descripcion=jTextArea1.getText();
-//        String fecha_ingreso=jDateChooser3.gette
-//        String fecha_vencimiento=jDateChooser4.getDate();
-        String url=jLabel9.getText();
+
+        String name = jTextField1.getText();
+        int stock = Integer.parseInt(jTextField2.getText());
+        //int precio = Integer.Parsent (txt.gettex());
+        String precio = jTextField3.getText();
+        String descripcion = jTextArea1.getText();        
+        String dia = Integer.toString(jDateChooser3.getCalendar().get(Calendar.DAY_OF_MONTH));
+        String mes = Integer.toString(jDateChooser3.getCalendar().get(Calendar.MONTH) + 1);
+        String year = Integer.toString(jDateChooser3.getCalendar().get(Calendar.YEAR));
+        String fecha_ingreso = (dia + "/" + mes+ "/" + year);
         
-        String estado = null ;
+        String day = Integer.toString(jDateChooser4.getCalendar().get(Calendar.DAY_OF_MONTH));
+        String moth = Integer.toString(jDateChooser4.getCalendar().get(Calendar.MONTH) + 1);
+        String ye = Integer.toString(jDateChooser4.getCalendar().get(Calendar.YEAR));
+        String fecha_vencimiento = (day + "/" + moth+ "/" + ye);      
         
-        if(jComboBox1.getSelectedItem().equals("1")){
+        
+        String url = jLabel9.getText();
+
+        String estado = null;
+
+        if (jComboBox1.getSelectedItem().equals("1")) {
             estado = "1";
-        } else{
+        } else {
             estado = "0";
         }
-            
-                pro.setNombre_producto(name);
-                pro.setDescripcion(descripcion);
-                pro.setStock(stock);
-                pro.setPrecio(precio);
-//              pro.setFecha_ingreso(fecha_vencimiento);
-//              pro.setFecha_ingreso(fecha_ingreso);
-                pro.setEstado(estado);
-//                pro.setFoto(url);
-                ccpro.AgregarProducto(pro);
-                JOptionPane.showMessageDialog(rootPane, "DATOS GUARDADOS SATISFACTORIAMENTE");
-                         
-                      
+
+        pro.setNombre_producto(name);
+        pro.setDescripcion(descripcion);
+        pro.setStock(stock);
+        pro.setPrecio(precio);
+        pro.setFecha_ingreso(fecha_ingreso);
+        pro.setFecha_vencimiento(fecha_vencimiento);
+        pro.setEstado(estado);
+        pro.setFoto(url);
+        ccpro.AgregarProducto(pro);
+        JOptionPane.showMessageDialog(rootPane, "DATOS GUARDADOS SATISFACTORIAMENTE");
+
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed

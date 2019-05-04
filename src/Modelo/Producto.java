@@ -8,22 +8,10 @@ import java.sql.Date;
 
 public class Producto {
     
-    private int codigo_producto,stock;
-   private String precio,descripcion,nombre_producto,estado,foto;
-//   private String  ,fecha_vencimiento,fecha_ingreso
-
-    public Producto() {
-    }
-
-    public Producto(int codigo_producto, int stock, String precio, String descripcion, String nombre_producto, String estado, String foto) {
-        this.codigo_producto = codigo_producto;
-        this.stock = stock;
-        this.precio = precio;
-        this.descripcion = descripcion;
-        this.nombre_producto = nombre_producto;
-        this.estado = estado;
-        this.foto = foto;
-    }
+    int codigo_producto,stock;
+    String precio,descripcion,nombre_producto,estado,foto;
+    String  fecha_vencimiento,fecha_ingreso;
+    //int precio;
 
     public int getCodigo_producto() {
         return codigo_producto;
@@ -80,7 +68,39 @@ public class Producto {
     public void setFoto(String foto) {
         this.foto = foto;
     }
-        
-  
+
+    public String getFecha_vencimiento() {
+        return fecha_vencimiento;
+    }
+
+    public void setFecha_vencimiento(String fecha_vencimiento) {
+        this.fecha_vencimiento = fecha_vencimiento;
+    }
+
+    public String getFecha_ingreso() {
+        return fecha_ingreso;
+    }
+
+    public void setFecha_ingreso(String fecha_ingreso) {
+        this.fecha_ingreso = fecha_ingreso;
+    }
+
+    public Producto() {
+    }
+
+    public Producto(int codigo_producto, int stock, String precio, String descripcion, String nombre_producto, String estado, String foto, String fecha_vencimiento, String fecha_ingreso) {
+        this.codigo_producto = codigo_producto;
+        this.stock = stock;
+        this.precio = precio;
+        this.descripcion = descripcion;
+        this.nombre_producto = nombre_producto;
+        this.estado = estado;
+        this.foto = foto;
+        this.fecha_vencimiento = fecha_vencimiento;
+        this.fecha_ingreso = fecha_ingreso;
+    }
+    
+    
+
     
 }

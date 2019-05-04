@@ -12,17 +12,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
 public class Ccliente {
 
     public ResultSet rs; // CLASE QUE MANIPULA LOS DATOS
-    
-        public boolean AgregarPersona(Cliente cli) {
+    PreparedStatement pre;
+    Conexion con;
+        public boolean AgregarPersona(Cliente cli) {       
         Connection co = null;
-        CallableStatement cstm = null;
+        CallableStatement cstm = null;        
         boolean resp = true;
         try {
             co = Conexion.getConnection();
@@ -115,5 +116,86 @@ public class Ccliente {
         return resp;
     }
     
+    
+     public Cliente buscarNum(String id) {
+         Cliente cli = new Cliente();
+
+        Connection con = null;
+        try {
+            String sql = "select * from Cliente where Nombre_Cliente like '% + ? + '%' ";
+            con = Conexion.getConnection();
+            pre = con.prepareStatement(sql);
+            pre.setString(1, id);
+            ResultSet rs = pre.executeQuery();
+            
+            while (rs.next()) {
+                cli.setCodigo_cliente(rs.getInt(1));
+                cli.setNombre_cliente(rs.getString(2));
+                cli.setApellido_cliente(rs.getString(3));
+                cli.setDireccion(rs.getString(4));
+                cli.setIdentificacion(rs.getString(5));
+                cli.setCorreo(rs.getString(6));
+                cli.setTelefono(rs.getString(7));
+                cli.setFoto(rs.getString(8));
+                cli.setEstado(rs.getString(9));
+                cli.setSexo(rs.getString(10));                 
+            }            
+            //Conexion.closeConnection();
+            // return cli;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        } finally {
+            try {
+                con.close();
+                pre.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return cli;
+    }
+     
+     
+     
+     
+     
+     public Cliente buscarDoc(String id) {
+        
+        Connection co = null;
+        try {
+            String sql = "select * from Cliente where Identificacion=?";
+            Cliente cli = new Cliente();            
+            co = Conexion.getConnection();            
+            pre= co.prepareStatement(sql);
+            pre.setString(1, id);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                cli.setCodigo_cliente(rs.getInt(1));
+                cli.setNombre_cliente(rs.getString(2));
+                cli.setApellido_cliente(rs.getString(3));
+                cli.setDireccion(rs.getString(4));
+                cli.setIdentificacion(rs.getString(5));
+                cli.setCorreo(rs.getString(6));
+                cli.setTelefono(rs.getString(7));
+                cli.setFoto(rs.getString(8));
+                cli.setEstado(rs.getString(9));
+                cli.setSexo(rs.getString(10));
+            }
+            Conexion.closeConnection();
+            return cli;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        } finally {
+            try {
+                co.close();
+                pre.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
     
 }
