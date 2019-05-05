@@ -73,10 +73,8 @@ public class Ccliente {
                 c.setFoto(rs.getString(8));
                 c.setEstado(rs.getString(9));
                 c.setSexo(rs.getString(10));  
-                //resp = cstm.execute();
                 lista.add(c);
                 co.commit();
-                //co.close();
             }
         } catch (Exception e) {
             System.out.println("El error fue :" + e);
@@ -117,85 +115,79 @@ public class Ccliente {
     }
     
     
-     public Cliente buscarNum(String id) {
-         Cliente cli = new Cliente();
-
-        Connection con = null;
-        try {
-            String sql = "select * from Cliente where Nombre_Cliente like '% + ? + '%' ";
-            con = Conexion.getConnection();
-            pre = con.prepareStatement(sql);
-            pre.setString(1, id);
-            ResultSet rs = pre.executeQuery();
-            
-            while (rs.next()) {
-                cli.setCodigo_cliente(rs.getInt(1));
-                cli.setNombre_cliente(rs.getString(2));
-                cli.setApellido_cliente(rs.getString(3));
-                cli.setDireccion(rs.getString(4));
-                cli.setIdentificacion(rs.getString(5));
-                cli.setCorreo(rs.getString(6));
-                cli.setTelefono(rs.getString(7));
-                cli.setFoto(rs.getString(8));
-                cli.setEstado(rs.getString(9));
-                cli.setSexo(rs.getString(10));                 
-            }            
-            //Conexion.closeConnection();
-            // return cli;
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
-        } finally {
-            try {
-                con.close();
-                pre.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return cli;
-    }
-     
-     
-     
-     
-     
-     public Cliente buscarDoc(String id) {
-        
+     public List<Cliente> ListaClienteN(String dato) {
         Connection co = null;
+        CallableStatement cstm = null;
+        boolean resp = true;
+        List<Cliente> lista = new ArrayList<Cliente>();
         try {
-            String sql = "select * from Cliente where Identificacion=?";
-            Cliente cli = new Cliente();            
-            co = Conexion.getConnection();            
-            pre= co.prepareStatement(sql);
-            pre.setString(1, id);
-            ResultSet rs = pre.executeQuery();
+            co = Conexion.getConnection();
+            co.setAutoCommit(false);
+            cstm = co.prepareCall("{Call listar_tablaN(?)}");
+            cstm.setString(1, dato);
+            rs = cstm.executeQuery();
             while (rs.next()) {
-                cli.setCodigo_cliente(rs.getInt(1));
-                cli.setNombre_cliente(rs.getString(2));
-                cli.setApellido_cliente(rs.getString(3));
-                cli.setDireccion(rs.getString(4));
-                cli.setIdentificacion(rs.getString(5));
-                cli.setCorreo(rs.getString(6));
-                cli.setTelefono(rs.getString(7));
-                cli.setFoto(rs.getString(8));
-                cli.setEstado(rs.getString(9));
-                cli.setSexo(rs.getString(10));
+                Cliente c = new Cliente();
+                c.setCodigo_cliente(rs.getInt(1));
+                c.setNombre_cliente(rs.getString(2));
+                c.setApellido_cliente(rs.getString(3));
+                c.setDireccion(rs.getString(4));
+                c.setIdentificacion(rs.getString(5));
+                c.setCorreo(rs.getString(6));
+                c.setTelefono(rs.getString(7));
+                c.setFoto(rs.getString(8));
+                c.setEstado(rs.getString(9));
+                c.setSexo(rs.getString(10));  
+                lista.add(c);
+                co.commit();
             }
+        } catch (Exception e) {
+            System.out.println("El error fue :" + e);
+            resp = false;
+            lista = null;
             Conexion.closeConnection();
-            return cli;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
-        } finally {
-            try {
-                co.close();
-                pre.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
         }
+        return lista;
     }
+     
+     
+     
+     
+     
+    public List<Cliente> ListaClienteD(String dato) {
+        Connection co = null;
+        CallableStatement cstm = null;
+        boolean resp = true;
+        List<Cliente> lista = new ArrayList<Cliente>();
+        try {
+            co = Conexion.getConnection();
+            co.setAutoCommit(false);
+            cstm = co.prepareCall("{Call listar_tablaD(?)}");
+            cstm.setString(1, dato);
+            rs = cstm.executeQuery();
+            while (rs.next()) {
+                Cliente c = new Cliente();
+                c.setCodigo_cliente(rs.getInt(1));
+                c.setNombre_cliente(rs.getString(2));
+                c.setApellido_cliente(rs.getString(3));
+                c.setDireccion(rs.getString(4));
+                c.setIdentificacion(rs.getString(5));
+                c.setCorreo(rs.getString(6));
+                c.setTelefono(rs.getString(7));
+                c.setFoto(rs.getString(8));
+                c.setEstado(rs.getString(9));
+                c.setSexo(rs.getString(10));  
+                lista.add(c);
+                co.commit();
+            }
+        } catch (Exception e) {
+            System.out.println("El error fue :" + e);
+            resp = false;
+            lista = null;
+            Conexion.closeConnection();
+        }
+        return lista;
+    }
+
     
 }

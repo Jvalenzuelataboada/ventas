@@ -20,6 +20,7 @@ public class Registro_Cliente extends javax.swing.JFrame {
     Ccliente cc = new Ccliente();
     Cliente cli = new Cliente();
     List<Cliente> ltc;
+    List<Cliente> aux= null;
 
     public Registro_Cliente() {
         initComponents();
@@ -64,47 +65,31 @@ public class Registro_Cliente extends javax.swing.JFrame {
         jTable1.setVisible(true);
     }
 
-    public void LimpiarTabla(DefaultTableModel model) {
-        int x;
-        for (x = model.getRowCount() - 1; x >= 0; x--) {
-            model.removeRow(x);
+    public void mostrar() {
+        
+        String[] cols = {"ID", "NOMBRE", "APELLIDO", "DIRECCION", "IDENTIFICACION", "CORREO", "TELEFONO", "FOTO", "ESTADO", "SEXO"};
+        ltc = aux;
+        Object[][] rows = new Object[ltc.size()][cols.length];
+        for (int i = 0; i < ltc.size(); i++) {
+            rows[i][0] = ltc.get(i).getCodigo_cliente();
+            rows[i][1] = ltc.get(i).getNombre_cliente();
+            rows[i][2] = ltc.get(i).getApellido_cliente();
+            rows[i][3] = ltc.get(i).getDireccion();
+            rows[i][4] = ltc.get(i).getIdentificacion();
+            rows[i][5] = ltc.get(i).getCorreo();
+            rows[i][6] = ltc.get(i).getTelefono();
+            rows[i][7] = ltc.get(i).getFoto();
+            rows[i][8] = ltc.get(i).getEstado();
+            rows[i][9] = ltc.get(i).getSexo();
+
         }
+        DefaultTableModel tb = new DefaultTableModel(rows, cols);
+        jTable1.setModel(tb);
+    
     }
 
-    public void mostrar(Cliente c) {
-
-        try {
-            ltc = cc.ListaCliente();
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            LimpiarTabla(model);
-            int col1 = c.getCodigo_cliente();
-            String col2 = c.getNombre_cliente();
-            String col3 = c.getApellido_cliente();
-            String col4 = c.getDireccion();
-            String col5 = c.getIdentificacion();
-            String col6 = c.getCorreo();
-            String col7 = c.getTelefono();
-            String col8 = c.getFoto();
-            String col9 = c.getEstado();
-            String col10 = c.getSexo();
-
-            Vector vRow = new Vector();
-            vRow.add(col1);
-            vRow.add(col2);
-            vRow.add(col3);
-            vRow.add(col4);
-            vRow.add(col5);
-            vRow.add(col6);
-            vRow.add(col7);
-            vRow.add(col8);
-            vRow.add(col9);
-            vRow.add(col10);
-            model.addRow(vRow);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
+    
+    
     public void llenarTabla() {
         String[] cols = {"ID", "NOMBRE", "APELLIDO", "DIRECCION", "IDENTIFICACION", "CORREO", "TELEFONO", "FOTO", "ESTADO", "SEXO"};
         ltc = cc.ListaCliente();
@@ -136,11 +121,6 @@ public class Registro_Cliente extends javax.swing.JFrame {
         jLabel15.setIcon(null);
         jLabel14.setText(null);
     }
-
-    ;
-    
-   
-    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -716,20 +696,20 @@ public class Registro_Cliente extends javax.swing.JFrame {
             if (jRadioButton2.isSelected()) {
                 jTextField1.setEnabled(true);
                 String dato = this.jTextField1.getText();
-                Cliente aux = cc.buscarNum(dato);
-                cc.ListaCliente();
-                mostrar(aux);
+                aux = cc.ListaClienteN(dato);
+                mostrar();
             } else {
                 if (jRadioButton1.isSelected()) {
                     jTextField1.setEnabled(true);
                     String dato = this.jTextField1.getText();
-                    Cliente aux = cc.buscarDoc(dato);
-                    cc.ListaCliente();
-                    mostrar(aux);
+                     aux = cc.ListaClienteD(dato);
+                    mostrar();
 
                 }
             }
         }
+
+
     }//GEN-LAST:event_jTextField1KeyReleased
 
 
