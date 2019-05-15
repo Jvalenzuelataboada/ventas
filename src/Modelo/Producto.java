@@ -9,10 +9,11 @@ import java.sql.Date;
 public class Producto {
     
     int codigo_producto,stock;
-    String precio,descripcion,nombre_producto,estado,foto;
+    String precio,descripcion,nombre_producto,estado;
+    byte[] foto;
     String  fecha_vencimiento,fecha_ingreso;
-    //int precio;
-
+    
+    
     public int getCodigo_producto() {
         return codigo_producto;
     }
@@ -61,11 +62,11 @@ public class Producto {
         this.estado = estado;
     }
 
-    public String getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 
@@ -88,7 +89,7 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(int codigo_producto, int stock, String precio, String descripcion, String nombre_producto, String estado, String foto, String fecha_vencimiento, String fecha_ingreso) {
+    public Producto(int codigo_producto, int stock, String precio, String descripcion, String nombre_producto, String estado, byte[] foto, String fecha_vencimiento, String fecha_ingreso) {
         this.codigo_producto = codigo_producto;
         this.stock = stock;
         this.precio = precio;

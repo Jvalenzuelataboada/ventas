@@ -6,14 +6,21 @@ import Conexion.Ccliente;
 import Modelo.Cliente;
 import com.sun.glass.events.KeyEvent;
 import java.awt.Image;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.ImageIcon;
 
 public class Registro_Cliente extends javax.swing.JFrame {
 
@@ -21,6 +28,8 @@ public class Registro_Cliente extends javax.swing.JFrame {
     Cliente cli = new Cliente();
     List<Cliente> ltc;
     List<Cliente> aux= null;
+    String filename = null;
+    byte[] person_img=null;
 
     public Registro_Cliente() {
         initComponents();
@@ -154,7 +163,7 @@ public class Registro_Cliente extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox<String>();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
@@ -163,7 +172,7 @@ public class Registro_Cliente extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        jComboBox4 = new javax.swing.JComboBox<String>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -493,17 +502,30 @@ public class Registro_Cliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+// TODO add your handling code here:/
+        
+        JFileChooser chooser = new JFileChooser();
+        chooser.showOpenDialog(null);
+        File f = chooser.getSelectedFile();
+        filename = f.getAbsolutePath();
+        ImageIcon imagenIcon = new ImageIcon(new ImageIcon(filename).getImage().getScaledInstance(jLabel15.getWidth(), jLabel15.getHeight(), Image.SCALE_SMOOTH));
+        jLabel15.setIcon(imagenIcon);
+        try {
+            File img = new File(filename);
+            FileInputStream fis = new FileInputStream(img);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
+            try {
+                for (int readNum; (readNum = fis.read(buf))!= -1;) {
+                    bos.write(buf, 0, readNum);
+                }
+                person_img = bos.toByteArray();
 
-        String ruta = null;
-        JFileChooser j = new JFileChooser();
-        j.setCurrentDirectory(new File("Imagenes/"));
-        int ap = j.showOpenDialog(this);
-        if (ap == JFileChooser.APPROVE_OPTION) {
-            ruta = j.getSelectedFile().getAbsolutePath();
-            jLabel15.setIcon(new ImageIcon(ruta));
-            jLabel14.setText(ruta);
-
+            } catch (IOException ex) {
+                Logger.getLogger(Registro_Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Registro_Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_jButton6ActionPerformed
@@ -523,52 +545,35 @@ public class Registro_Cliente extends javax.swing.JFrame {
         String identificacion = jTextField6.getText();
         String correo = jTextField7.getText();
         String telefono = jTextField8.getText();
-        String url = jLabel14.getText();
+        String url = jLabel15.getText();
         String sexo = null;
-
+        String estado= null;
         if (jComboBox1.getSelectedItem().equals("M")) {
             sexo = "M";
         } else {
             sexo = "F";
         }
-
-        if (name.trim().length() > 2 && lastname.trim().length() > 2 && direccion.trim().length() > 2 && identificacion.trim().length() > 2 && correo.trim().length() > 2 && telefono.trim().length() > 2 && url.trim().length() != 0 && sexo.trim().length() != 0) {
-
-            cli.setNombre_cliente(name);
-            cli.setApellido_cliente(lastname);
-            cli.setDireccion(direccion);
-            cli.setIdentificacion(identificacion);
-            cli.setCorreo(correo);
-            cli.setTelefono(telefono);
-            cli.setFoto(url);
-            cli.setSexo(sexo);
-            cc.AgregarPersona(cli);
-
-            JOptionPane.showMessageDialog(rootPane, "DATOS GUARDADOS SATISFACTORIAMENTE");
-            limpiar();
-
-            jTextField3.setEnabled(false);
-            jTextField4.setEnabled(false);
-            jTextField5.setEnabled(false);
-            jTextField6.setEnabled(false);
-            jTextField7.setEnabled(false);
-            jTextField8.setEnabled(false);
-            jButton1.setEnabled(true);
-            jButton2.setEnabled(false);
+         if (jComboBox4.getSelectedItem().equals("1")) {
+            estado = "1";
         } else {
-            JOptionPane.showMessageDialog(rootPane, "LLENAR TODOS LOS CAMPOS");
-
+            estado = "0";
         }
-        
+        cli.setNombre_cliente(name);
+        cli.setApellido_cliente(lastname);
+        cli.setDireccion(direccion);
+        cli.setIdentificacion(identificacion);
+        cli.setCorreo(correo);
+        cli.setTelefono(telefono);
+        cli.setFoto(person_img);
+        cli.setEstado(estado);
+        cli.setSexo(sexo);
+        cc.AgregarPersona(cli);
         llenarTabla();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        jTextField1.setEnabled(true);
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
-
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
+        int i = jTable1.getSelectedRow();
         int seleccion = jTable1.rowAtPoint(evt.getPoint());
         jTextField2.setText(String.valueOf(jTable1.getValueAt(seleccion, 0)));
         jTextField3.setText(String.valueOf(jTable1.getValueAt(seleccion, 1)));
@@ -577,17 +582,19 @@ public class Registro_Cliente extends javax.swing.JFrame {
         jTextField6.setText(String.valueOf(jTable1.getValueAt(seleccion, 4)));
         jTextField7.setText(String.valueOf(jTable1.getValueAt(seleccion, 5)));
         jTextField8.setText(String.valueOf(jTable1.getValueAt(seleccion, 6)));
-        jLabel14.setText(String.valueOf(jTable1.getValueAt(seleccion, 7)));
+        //jLabel14.setText(String.valueOf(jTable1.getValueAt(seleccion, 7)));
         jComboBox1.setSelectedItem(String.valueOf(jTable1.getValueAt(seleccion, 9)));
         jComboBox4.setSelectedItem(String.valueOf(jTable1.getValueAt(seleccion, 8)));
-
-
+       // jTextField3.setText(cc.ListaCliente().get(i).getNombre_cliente());
+         byte[] img = (cc.ListaCliente().get(i).getFoto());
+        ImageIcon imagenIcon = new ImageIcon(new ImageIcon(img).getImage().getScaledInstance(jLabel15.getWidth(), jLabel15.getHeight(), Image.SCALE_SMOOTH));
+        jLabel15.setIcon(imagenIcon);
+        
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
         // TODO add your handling code here:         
         if (jRadioButton1.isSelected()) {
-
             if (!Character.isLetter(evt.getKeyChar()) && evt.getKeyChar() != KeyEvent.VK_SPACE && evt.getKeyChar() != KeyEvent.VK_BACKSPACE) {
                 getToolkit().beep();
                 JOptionPane.showMessageDialog(null, "Ingreso solo de numeros", "MENSAJE", JOptionPane.WARNING_MESSAGE);
@@ -726,15 +733,11 @@ public class Registro_Cliente extends javax.swing.JFrame {
 
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
 
-//      if (!Character.isLetter(evt.getKeyChar()) && evt.getKeyChar() != KeyEvent.VK_SPACE && evt.getKeyChar() != KeyEvent.VK_BACKSPACE) {
-//        getToolkit().beep();
-//        JOptionPane.showMessageDialog(null, "Ingreso solo de Letras", "MENSAJE", JOptionPane.WARNING_MESSAGE);
-//        evt.consume();
-//      }
-//      if(String.valueOf(jTextField3.getText().charAt(0)).equals(" ")){
-//          JOptionPane.showMessageDialog(null,"Su primer digito es un espacio en blanco");
-//      }
-//      if(String.valueOf(TEXTFIELD.getText().charAt(0)).equals(" ")){ JOptionPane.showMessageDialog(null,"Su primer digito es un espacio en blanco"); }
+      if (!Character.isLetter(evt.getKeyChar()) && evt.getKeyChar() != KeyEvent.VK_SPACE && evt.getKeyChar() != KeyEvent.VK_BACKSPACE) {
+        getToolkit().beep();
+        JOptionPane.showMessageDialog(null, "Ingreso solo de Letras", "MENSAJE", JOptionPane.WARNING_MESSAGE);
+        evt.consume();
+      }
     }//GEN-LAST:event_jTextField3KeyTyped
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -746,7 +749,7 @@ public class Registro_Cliente extends javax.swing.JFrame {
         String identificacion = jTextField6.getText();
         String correo = jTextField7.getText();
         String telefono = jTextField8.getText();
-        String url = jLabel14.getText();
+        String url = jLabel15.getText();
         String sexo = null;
         String estado = null;
 
@@ -762,14 +765,14 @@ public class Registro_Cliente extends javax.swing.JFrame {
             sexo = "F";
         }
 
-        if (name.trim().length() > 2 && lastname.trim().length() > 2 && direccion.trim().length() > 2 && identificacion.trim().length() > 2 && correo.trim().length() > 2 && telefono.trim().length() > 2 && url.trim().length() != 0 && sexo.trim().length() != 0) {
+       // if (name.trim().length() > 2 && lastname.trim().length() > 2 && direccion.trim().length() > 2 && identificacion.trim().length() > 2 && correo.trim().length() > 2 && telefono.trim().length() > 2 && url.trim().length() != 0 && sexo.trim().length() != 0) {
             cli.setNombre_cliente(name);
             cli.setApellido_cliente(lastname);
             cli.setDireccion(direccion);
             cli.setIdentificacion(identificacion);
             cli.setCorreo(correo);
             cli.setTelefono(telefono);
-            cli.setFoto(url);
+            cli.setFoto(person_img);
             cli.setSexo(sexo);
             cli.setEstado(estado);
             cli.setCodigo_cliente(codigo);
@@ -777,13 +780,19 @@ public class Registro_Cliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "DATOS ACTUALIZADOS SATISFACTORIAMENTE");
             limpiar();
             llenarTabla();
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "LLENAR TODOS LOS CAMPOS");
+     //   } else {
+     //       JOptionPane.showMessageDialog(rootPane, "LLENAR TODOS LOS CAMPOS");
 
-        }
+       // }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+        jTextField1.setEnabled(true);
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+        // TODO add your handling code here:
         jTextField1.setEnabled(true);
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 

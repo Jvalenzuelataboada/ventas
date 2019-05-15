@@ -3,12 +3,12 @@ package Modelo;
 public class Cliente {
 
     private int codigo_cliente;
-    private String nombre_cliente, apellido_cliente, direccion, identificacion, correo, telefono, foto, estado, sexo;
-
+    private String nombre_cliente, apellido_cliente, direccion, identificacion, correo, telefono, estado, sexo;
+    private byte[] foto;
     public Cliente() {
     }
 
-    public Cliente(int codigo_cliente, String nombre_cliente, String apellido_cliente, String direccion, String identificacion, String correo, String telefono, String foto, String estado, String sexo) {
+    public Cliente(int codigo_cliente, String nombre_cliente, String apellido_cliente, String direccion, String identificacion, String correo, String telefono, byte[] foto, String estado, String sexo) {
         this.codigo_cliente = codigo_cliente;
         this.nombre_cliente = nombre_cliente;
         this.apellido_cliente = apellido_cliente;
@@ -77,13 +77,13 @@ public class Cliente {
         this.telefono = telefono;
     }
 
-    public String getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
-    }
+    } 
 
     public String getEstado() {
         return estado;

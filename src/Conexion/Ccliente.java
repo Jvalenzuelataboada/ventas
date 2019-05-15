@@ -28,15 +28,16 @@ public class Ccliente {
         try {
             co = Conexion.getConnection();
             co.setAutoCommit(false);
-            cstm = co.prepareCall("{Call guardar_cliente(?,?,?,?,?,?,?,?)}");
+            cstm = co.prepareCall("{Call guardar_cliente(?,?,?,?,?,?,?,?,?)}");
             cstm.setString(1, cli.getNombre_cliente());
             cstm.setString(2, cli.getApellido_cliente());
             cstm.setString(3, cli.getDireccion());
             cstm.setString(4, cli.getIdentificacion());
             cstm.setString(5, cli.getCorreo());
             cstm.setString(6, cli.getTelefono());
-            cstm.setString(7, cli.getFoto());
-            cstm.setString(8, cli.getSexo());
+            cstm.setBytes(7, cli.getFoto());
+            cstm.setString(8, cli.getEstado());
+            cstm.setString(9, cli.getSexo());
             resp = cstm.execute();
             co.commit();
             co.close();
@@ -70,7 +71,7 @@ public class Ccliente {
                 c.setIdentificacion(rs.getString(5));
                 c.setCorreo(rs.getString(6));
                 c.setTelefono(rs.getString(7));
-                c.setFoto(rs.getString(8));
+                c.setFoto(rs.getBytes(8));
                 c.setEstado(rs.getString(9));
                 c.setSexo(rs.getString(10));  
                 lista.add(c);
@@ -100,7 +101,7 @@ public class Ccliente {
             cstm.setString(5, cli.getIdentificacion());
             cstm.setString(6, cli.getCorreo());
             cstm.setString(7, cli.getTelefono());
-            cstm.setString(8, cli.getFoto());
+            cstm.setBytes(8, cli.getFoto());
             cstm.setString(9, cli.getSexo());
             cstm.setString(10, cli.getEstado());
             resp = cstm.execute();
@@ -135,7 +136,7 @@ public class Ccliente {
                 c.setIdentificacion(rs.getString(5));
                 c.setCorreo(rs.getString(6));
                 c.setTelefono(rs.getString(7));
-                c.setFoto(rs.getString(8));
+                c.setFoto(rs.getBytes(8));
                 c.setEstado(rs.getString(9));
                 c.setSexo(rs.getString(10));  
                 lista.add(c);
@@ -174,7 +175,7 @@ public class Ccliente {
                 c.setIdentificacion(rs.getString(5));
                 c.setCorreo(rs.getString(6));
                 c.setTelefono(rs.getString(7));
-                c.setFoto(rs.getString(8));
+                c.setFoto(rs.getBytes(8));
                 c.setEstado(rs.getString(9));
                 c.setSexo(rs.getString(10));  
                 lista.add(c);

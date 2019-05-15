@@ -8,11 +8,20 @@ package Vista;
 import Conexion.Conexion;
 import Conexion.pProducto;
 import Modelo.Producto;
+import java.awt.Image;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -28,6 +37,9 @@ public class Registro_Producto extends javax.swing.JFrame {
 
     Producto pro=new Producto();
     pProducto ccpro=new pProducto();
+    List<Producto> ltp;
+    String filename = null;
+    byte[] person_img=null;
     
    
     /**
@@ -36,6 +48,7 @@ public class Registro_Producto extends javax.swing.JFrame {
     public Registro_Producto() {
         initComponents();
         llenarCombo();
+        llenarTabla();
        
     }
     
@@ -45,7 +58,26 @@ public class Registro_Producto extends javax.swing.JFrame {
      
         jComboBox1.addItem("0");
         jComboBox1.addItem("1");
-    }                         
+    } 
+    
+     public void llenarTabla() {
+        String[] cols = {"COD_PRODUCTO", "DESCRIPCION", "NOMBRE_PRODUCTO", "SOTCK", "PRECIO", "FECHA_VENCIMIENTO", "ESTADO", "FOTO", "FECHA_INGRESO"};
+        ltp = ccpro.Listar_Producto();
+        Object[][] rows = new Object[ltp.size()][cols.length];
+        for (int i = 0; i < ltp.size(); i++) {
+            rows[i][0] = ltp.get(i).getCodigo_producto();
+            rows[i][1] = ltp.get(i).getDescripcion();
+            rows[i][2] = ltp.get(i).getNombre_producto();
+            rows[i][3] = ltp.get(i).getStock();
+            rows[i][4] = ltp.get(i).getPrecio();
+            rows[i][5] = ltp.get(i).getFecha_vencimiento();
+            rows[i][6] = ltp.get(i).getEstado();
+            rows[i][7] = ltp.get(i).getFoto();
+            rows[i][8] = ltp.get(i).getFecha_ingreso();
+        }
+        DefaultTableModel tb = new DefaultTableModel(rows, cols);
+        jTable1.setModel(tb);
+    }
 
     
     /**
@@ -97,14 +129,6 @@ public class Registro_Producto extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
-            }
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         jLabel2.setText("Nombre : ");
 
@@ -305,8 +329,18 @@ public class Registro_Producto extends javax.swing.JFrame {
         jButton4.setText("Cancelar");
 
         jButton1.setText("Editar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Salir");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("Eliminar");
 
@@ -364,15 +398,6 @@ public class Registro_Producto extends javax.swing.JFrame {
             }
         });
 
-        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField4KeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField4KeyTyped(evt);
-            }
-        });
-
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -384,6 +409,11 @@ public class Registro_Producto extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -448,23 +478,6 @@ public class Registro_Producto extends javax.swing.JFrame {
        
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
-    private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
-        
-    }//GEN-LAST:event_jTextField4KeyReleased
-
-    private void jTextField4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyTyped
-        
-     
-    }//GEN-LAST:event_jTextField4KeyTyped
-
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-    
-    }//GEN-LAST:event_formWindowActivated
-
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-       
-    }//GEN-LAST:event_formWindowOpened
-
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
         String name = jTextField1.getText();
@@ -483,7 +496,7 @@ public class Registro_Producto extends javax.swing.JFrame {
         String fecha_vencimiento = (day + "/" + moth+ "/" + ye);      
         
         
-        String url = jLabel9.getText();
+        String url = jLabel8.getText();
 
         String estado = null;
 
@@ -500,9 +513,10 @@ public class Registro_Producto extends javax.swing.JFrame {
         pro.setFecha_ingreso(fecha_ingreso);
         pro.setFecha_vencimiento(fecha_vencimiento);
         pro.setEstado(estado);
-        pro.setFoto(url);
+        pro.setFoto(person_img);
         ccpro.AgregarProducto(pro);
         JOptionPane.showMessageDialog(rootPane, "DATOS GUARDADOS SATISFACTORIAMENTE");
+       
 
 
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -512,17 +526,70 @@ public class Registro_Producto extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-          String ruta=null;
-        JFileChooser j = new JFileChooser();
-        j.setCurrentDirectory(new File("Imagenes/"));
-        int ap = j.showOpenDialog(this);
-        if(ap == JFileChooser.APPROVE_OPTION){
-            ruta = j.getSelectedFile().getAbsolutePath();
-            jLabel8.setIcon(new ImageIcon(ruta));
-            jLabel9.setText(ruta);
+        JFileChooser chooser = new JFileChooser();
+        chooser.showOpenDialog(null);
+        File f = chooser.getSelectedFile();
+        filename = f.getAbsolutePath();
+        ImageIcon imagenIcon = new ImageIcon(new ImageIcon(filename).getImage().getScaledInstance(jLabel8.getWidth(), jLabel8.getHeight(), Image.SCALE_SMOOTH));
+        jLabel8.setIcon(imagenIcon);
+        try {
+            File img = new File(filename);
+            FileInputStream fis = new FileInputStream(img);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
+            try {
+                for (int readNum; (readNum = fis.read(buf))!= -1;) {
+                    bos.write(buf, 0, readNum);
+                }
+                person_img = bos.toByteArray();
 
+            } catch (IOException ex) {
+                Logger.getLogger(Registro_Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Registro_Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        try {
+            // TODO add your handling code here:
+            int index = jTable1.rowAtPoint(evt.getPoint());
+            jTextField5.setText(String.valueOf(jTable1.getValueAt(index,0)));
+            jTextArea1.setText(String.valueOf(jTable1.getValueAt(index, 1)));
+            jTextField1.setText(String.valueOf(jTable1.getValueAt(index, 2)));
+            jTextField2.setText(String.valueOf(jTable1.getValueAt(index, 3)));
+            jTextField3.setText(String.valueOf(jTable1.getValueAt(index, 4)));
+            int sr1=jTable1.getSelectedRow();
+            Date date1= new SimpleDateFormat("yyyy-MM-dd").parse((String)jTable1.getValueAt(sr1,5));
+            jDateChooser4.setDate(date1);
+            jComboBox1.setSelectedIndex(Integer.parseInt(String.valueOf(jTable1.getValueAt(index,6))));
+
+
+            int sr=jTable1.getSelectedRow();
+            Date date= new SimpleDateFormat("yyyy-MM-dd").parse((String)jTable1.getValueAt(sr,8));
+            jDateChooser3.setDate(date);
+            
+             byte[] img = (ccpro.Listar_Producto().get(index).getFoto());
+        ImageIcon imagenIcon = new ImageIcon(new ImageIcon(img).getImage().getScaledInstance(jLabel8.getWidth(), jLabel8.getHeight(), Image.SCALE_SMOOTH));
+        jLabel8.setIcon(imagenIcon);
+            
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(Registro_Producto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
